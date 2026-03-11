@@ -68,7 +68,7 @@ A continuous integration workflow is defined in `.github/workflows/ci.yml`. On e
 
 ### Deployment — Netlify
 
-The project is deployed to **Netlify**. Because this is a client-side SPA using React Router, direct URL visits and page refreshes must resolve to `index.html` rather than a 404. This is handled by `netlify.toml` at the project root, which configures a catch-all redirect:
+The project is deployed to **Netlify** and is live at [city-stays-booking.netlify.app](https://city-stays-booking.netlify.app) . Because this is a client-side SPA using React Router, direct URL visits and page refreshes must resolve to `index.html` rather than a 404. This is handled by `netlify.toml` at the project root, which configures a catch-all redirect:
 
 ```toml
 [[redirects]]
