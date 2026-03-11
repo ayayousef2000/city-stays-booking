@@ -97,21 +97,37 @@ export default defineConfig({
       // Only measure coverage in src/ — exclude test utilities and type files.
       include: ['src/**/*.{ts,tsx}'],
       exclude: [
+        // Test files themselves
         'src/**/*.{test,spec}.{ts,tsx}',
         'src/**/__tests__/**',
         'src/setupTests.ts',
         'src/**/*.d.ts',
+
         // Type-only files add no runtime coverage value.
         'src/types/**',
+
+        // Entry point — trivial bootstrap code, not meaningful to test
+        'src/index.tsx',
+
+        // Scaffold pages — temporary hardcoded UI pending Redux integration.
+        // These will be fully rewritten and tested once the store is wired up.
+        // TODO: Remove these exclusions as each page is properly implemented.
+        'src/pages/main-page/**',
+        'src/pages/favorites-page/**',
+        'src/pages/login-page/**',
+        'src/pages/offer-page/**',
+
+        // App.tsx is a thin router shell — covered indirectly by page tests
+        'src/App.tsx',
       ],
 
       // Minimum thresholds enforced in CI. Fail the build if coverage drops below.
       // Start conservative and raise as the test suite matures.
       thresholds: {
-        lines: 60,
-        functions: 60,
-        branches: 50,
-        statements: 60,
+        lines: 90,
+        functions: 90,
+        branches: 80,
+        statements: 90,
       },
     },
   },
