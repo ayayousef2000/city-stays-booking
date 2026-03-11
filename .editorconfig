@@ -1,0 +1,43 @@
+# .editorconfig
+# Ensures consistent coding styles across different editors and IDEs.
+# Supported by VS Code (with EditorConfig extension), WebStorm, Vim, etc.
+# WHY: Without this, developers on different editors may commit files with
+# mixed indentation or wrong line endings, causing noisy diffs.
+
+root = true
+
+# ── Defaults for all files ────────────────────────────────────────────────────
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# ── TypeScript / TSX / JavaScript ────────────────────────────────────────────
+[*.{ts,tsx,js,jsx,mjs,cjs}]
+indent_size = 2
+max_line_length = 80
+
+# ── CSS ───────────────────────────────────────────────────────────────────────
+[*.{css,scss,less}]
+indent_size = 2
+
+# ── JSON / Config files ───────────────────────────────────────────────────────
+[*.{json,jsonc}]
+indent_size = 2
+
+# ── Markdown ─────────────────────────────────────────────────────────────────
+[*.md]
+# Markdown uses trailing whitespace for line breaks — don't trim it.
+trim_trailing_whitespace = false
+max_line_length = off
+
+# ── YAML ─────────────────────────────────────────────────────────────────────
+[*.{yml,yaml}]
+indent_size = 2
+
+# ── Shell scripts ─────────────────────────────────────────────────────────────
+[*.sh]
+end_of_line = lf

@@ -1,0 +1,81 @@
+{
+  "compilerOptions": {
+    // ── Compilation Target ────────────────────────────────────────────────────
+    // ES2020 gives us optional chaining, nullish coalescing, BigInt, Promise.allSettled.
+    // Matches the browserslist production target (>0.2%, not dead).
+    "target": "ES2020",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+
+    // ── Module System ─────────────────────────────────────────────────────────
+    "module": "ESNext",
+
+    // "bundler" moduleResolution is the correct mode for Vite projects.
+    // It supports bare specifier imports and package.json "exports" fields
+    // without needing explicit file extensions — matching Vite's behavior.
+    "moduleResolution": "bundler",
+
+    // Required by "bundler" moduleResolution — allows `.ts`/`.tsx` extension
+    // in import paths (Vite strips them at build time).
+    "allowImportingTsExtensions": true,
+
+    // Allows `import data from './data.json'` with full type inference.
+    "resolveJsonModule": true,
+
+    // Each file is compiled independently. Required for Vite's transform pipeline
+    // and for `const enum` isolation. Prevents subtle cross-file type bugs.
+    "isolatedModules": true,
+
+    // Vite handles the actual emit — TS only type-checks.
+    "noEmit": true,
+
+    // Use the React 17+ automatic JSX transform (no `import React` needed).
+    "jsx": "react-jsx",
+
+    // Skip type-checking of .d.ts files in node_modules for build speed.
+    // We still get type errors in our own code.
+    "skipLibCheck": true,
+
+    // ── Path Aliases ──────────────────────────────────────────────────────────
+    // WHY: Absolute imports (`@/store/slices/authSlice`) are far more
+    // maintainable than deeply nested relative imports (`../../../../store/slices/authSlice`).
+    // Must be mirrored in vite.config.ts resolve.alias.
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+
+    // ── Strict Type Checking ──────────────────────────────────────────────────
+    // `strict: true` enables: strictNullChecks, noImplicitAny, strictFunctionTypes,
+    // strictBindCallApply, strictPropertyInitialization, noImplicitThis,
+    // useUnknownInCatchVariables, alwaysStrict.
+    "strict": true,
+
+    // Disallow variables and parameters that are declared but never read.
+    // Catches dead code before it accumulates.
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    // Require explicit `return` in every code path of a function.
+    // Prevents functions that accidentally return `undefined` in some branches.
+    "noImplicitReturns": true,
+
+    // Prevent accidental fallthrough in switch cases without explicit `break`.
+    "noFallthroughCasesInSwitch": true,
+
+    // Prevents `import Foo from './foo'` resolving differently on
+    // case-sensitive (Linux/CI) vs case-insensitive (macOS/Windows) file systems.
+    // Catches bugs that only manifest on the Netlify build server.
+    "forceConsistentCasingInFileNames": true,
+
+    // Prevents exporting `import type` values as runtime values (a common
+    // source of "X is not a constructor" errors in production bundles).
+    "verbatimModuleSyntax": false,
+
+    // ── Test Type Declarations ────────────────────────────────────────────────
+    // Injects `describe`, `it`, `expect`, `vi` as globals for Vitest.
+    // Injects custom matchers from @testing-library/jest-dom.
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

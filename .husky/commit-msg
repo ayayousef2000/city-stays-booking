@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+# .husky/commit-msg
+# Validates the commit message against commitlint rules before the commit lands.
+#
+# This hook receives the path to the temporary file containing the commit
+# message as its first argument ($1). commitlint reads it from there.
+#
+# If the message doesn't follow Conventional Commits, the commit is aborted
+# and the developer sees exactly which rule was violated.
+
+npx --no -- commitlint --edit "$1"

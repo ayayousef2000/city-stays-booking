@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+# .husky/pre-push
+# Runs a full TypeScript type-check before pushing to the remote.
+#
+# WHY on push (not on commit):
+# Type-checking the full project takes 5-15 seconds depending on size.
+# That's acceptable before a push (which hits the server) but would feel
+# sluggish on every local commit. This is the correct cost/safety trade-off.
+#
+# This catches type errors that ESLint's typed rules miss (e.g. generic
+# constraints, complex conditional types) before they reach CI.
+
+echo "🔍 Running TypeScript type-check before push..."
+npx tsc --noEmit

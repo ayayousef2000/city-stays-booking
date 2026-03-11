@@ -1,0 +1,46 @@
+{
+  // Auto-format on save using Prettier (configured in .prettierrc).
+  // WHY: Eliminates "please format your code" review comments entirely.
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Run ESLint --fix on save for auto-fixable rules (import ordering, etc.)
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
+  },
+
+  // Use the project's local TypeScript version (not VS Code's built-in).
+  // WHY: Prevents "works on my machine" type errors when the project uses
+  // a newer TypeScript version than VS Code ships with.
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
+  // Show ESLint status in the status bar.
+  "eslint.enable": true,
+
+  // Validate TypeScript and TSX files with ESLint.
+  "eslint.validate": [
+    "typescript",
+    "typescriptreact"
+  ],
+
+  // File exclusions from VS Code's file watcher (improves performance).
+  "files.exclude": {
+    "node_modules": true,
+    "dist": true,
+    "coverage": true
+  },
+
+  // Associate file types for correct syntax highlighting.
+  "files.associations": {
+    "*.css": "css"
+  },
+
+  // Rulers at 80 chars to match Prettier's printWidth.
+  "editor.rulers": [80],
+
+  // Trim trailing whitespace on save (matches .editorconfig).
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true
+}

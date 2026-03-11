@@ -1,0 +1,74 @@
+# netlify.toml
+# Netlify deployment configuration for City Stays Booking SPA.
+
+# ── Build Settings ─────────────────────────────────────────────────────────────
+[build]
+  # The command Netlify runs to build the project.
+  command = "npm run build"
+
+  # The directory Netlify deploys after the build completes.
+  # Vite outputs to `dist/` by default.
+  publish = "dist"
+
+# ── SPA Client-Side Routing Fix ───────────────────────────────────────────────
+# WHY this is CRITICAL:
+# React Router handles routing entirely in the browser (client-side).
+# When a user visits https://yourapp.netlify.app/offer/42 directly, or
+# hits refresh on that URL, Netlify's server looks for a file at /offer/42.
+# That file doesn't exist — Vite only outputs /index.html.
+# Without this redirect, Netlify returns a 404.
+#
+# This rule tells Netlify: "For ANY incoming URL, serve index.html with a
+# 200 OK status." The browser then loads the React app, React Router reads
+# the URL, and renders the correct page.
+#
+# The `!` in conditions means "do NOT rewrite if the file actually exists"
+# — so /favicon.png, /css/main.css, etc. still serve correctly.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ── Security Headers ──────────────────────────────────────────────────────────
+# Applied to every response from Netlify's CDN.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Prevent this site from being loaded in an iframe on another origin.
+    # `SAMEORIGIN` allows same-origin iframes (e.g. Netlify previews).
+    X-Frame-Options = "SAMEORIGIN"
+
+    # Disable MIME-type sniffing. Prevents browsers from interpreting files
+    # as a different MIME type than what the server declares.
+    X-Content-Type-Options = "nosniff"
+
+    # Enable browser's built-in XSS filter (legacy browsers).
+    X-XSS-Protection = "1; mode=block"
+
+    # Control how much referrer info is sent with requests.
+    # `strict-origin-when-cross-origin` sends the origin only on HTTPS→HTTPS.
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+    # Permissions Policy: disable sensitive browser features not used by this app.
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(self)"
+
+# ── Asset Caching ─────────────────────────────────────────────────────────────
+# Vite hashes all static asset filenames (e.g. index-Bx2q4k.js).
+# These files are content-addressed — if the content changes, the hash changes.
+# It's safe to cache them forever (1 year = 31536000 seconds).
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# ── Context-Specific Builds ───────────────────────────────────────────────────
+# Netlify supports deploy contexts: production, deploy-preview, branch-deploy.
+
+[context.production]
+  command = "npm run validate && npm run build"
+
+[context.deploy-preview]
+  command = "npm run build"
+
+[context.branch-deploy]
+  command = "npm run build"

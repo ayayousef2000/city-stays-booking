@@ -1,0 +1,38 @@
+{
+  "recommendations": [
+    // ── Core ──────────────────────────────────────────────────────────────────
+    // ESLint: shows lint errors inline as you type
+    "dbaeumer.vscode-eslint",
+
+    // Prettier: formats on save
+    "esbenp.prettier-vscode",
+
+    // EditorConfig: applies .editorconfig rules automatically
+    "editorconfig.editorconfig",
+
+    // ── TypeScript & React ────────────────────────────────────────────────────
+    // Better TypeScript error messages inline
+    "mattpocock.ts-error-translator",
+
+    // Auto-import React components and modules
+    "steoates.autoimport",
+
+    // ── Testing ───────────────────────────────────────────────────────────────
+    // Vitest: run and debug tests directly from VS Code
+    "vitest.explorer",
+
+    // ── Git ───────────────────────────────────────────────────────────────────
+    // Conventional Commits helper (commit message UI)
+    "vivaxy.vscode-conventional-commits",
+
+    // GitLens: inline blame, history, PR annotations
+    "eamodio.gitlens",
+
+    // ── Productivity ──────────────────────────────────────────────────────────
+    // Highlight TODO/FIXME/HACK comments
+    "gruntfuggly.todo-tree",
+
+    // Path autocomplete for import statements
+    "christian-kohler.path-intellisense"
+  ]
+}

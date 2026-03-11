@@ -1,0 +1,104 @@
+# .github/workflows/ci.yml
+# Continuous Integration pipeline for City Stays Booking.
+#
+# Runs on: every push to main/develop, every pull request targeting main.
+#
+# Jobs:
+#   quality  — Linting, formatting check, TypeScript type-check, tests + coverage
+#   build    — Production Vite build (validates the deploy artifact is healthy)
+#
+# WHY separate jobs:
+# `quality` catches code issues fast (~1-2min).
+# `build` catches bundling/import errors that pass type-check but fail at
+# rollup resolution time. Running them in parallel reduces total CI time.
+
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+# Cancel in-progress runs for the same branch on new push.
+# Saves CI minutes during rapid iteration.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Code Quality ─────────────────────────────────────────────────────────────
+  quality:
+    name: Quality Gates
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          # Cache npm dependencies based on package-lock.json hash.
+          # Restores node_modules from cache on subsequent runs — saves ~30s.
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript type-check
+        run: npm run typecheck
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Prettier format check
+        run: npm run format:check
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Upload coverage report
+        # Only upload coverage on pushes to main (not PRs) to avoid noise.
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 30
+
+  # ── Production Build ──────────────────────────────────────────────────────────
+  build:
+    name: Production Build
+    runs-on: ubuntu-latest
+    # Build only after quality gates pass.
+    needs: quality
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production bundle
+        run: npm run build
+        env:
+          # Set the API base URL from a GitHub Actions secret.
+          # In Netlify, set this as an environment variable in Site Settings.
+          # Access in code via: import.meta.env.VITE_API_BASE_URL
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7

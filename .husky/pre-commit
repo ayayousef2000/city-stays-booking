@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+# .husky/pre-commit
+# Runs lint-staged before every commit.
+#
+# WHY lint-staged and not a full `npm run lint`:
+# Running ESLint + Prettier across the ENTIRE project on every commit would be
+# too slow (5-20s+) as the codebase grows. lint-staged runs the tools ONLY on
+# the files staged for this specific commit — typically <1s.
+#
+# What it does (defined in package.json "lint-staged"):
+#   *.{ts,tsx}   → eslint --fix, then prettier --write
+#   *.{css,md}   → prettier --write
+
+npx lint-staged
