@@ -1,6 +1,23 @@
+// src/pages/favorites-page/index.tsx
+// Scaffold page — hardcoded mock favorites until Redux store is wired up.
+// TODO: Replace static cards with useAppSelector(selectFavoriteOffers)
+// TODO: Replace header user data with useAppSelector(selectUserData)
+// TODO: Group favorites by city dynamically from the store
+//
+// WHY `ReactNode` instead of `JSX.Element`:
+// `JSX.Element` is a legacy type alias for `React.ReactElement<any, any>`.
+// React 18 components can return null, strings, arrays, or Fragments —
+// none of which satisfy `JSX.Element`. `ReactNode` is the correct union type.
+//
+// WHY `href` instead of `xlinkHref` on <use>:
+// `xlinkHref` was part of the SVG 1.1 / XLink namespace and was deprecated
+// in SVG 2.0. React 18 removed support entirely and emits a console warning.
+// The plain `href` attribute is the correct modern syntax.
+
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
-function FavoritesPage(): JSX.Element {
+function FavoritesPage(): ReactNode {
   return (
     <div className="page">
       <header className="header">
@@ -11,7 +28,7 @@ function FavoritesPage(): JSX.Element {
                 <img
                   className="header__logo"
                   src="img/logo.svg"
-                  alt="city stays booking"
+                  alt="City stays booking"
                   width="81"
                   height="41"
                 />
@@ -82,13 +99,15 @@ function FavoritesPage(): JSX.Element {
                         <button
                           className="place-card__bookmark-button place-card__bookmark-button--active button"
                           type="button"
+                          aria-label="Remove from bookmarks"
                         >
                           <svg
                             className="place-card__bookmark-icon"
                             width="18"
                             height="19"
                           >
-                            <use xlinkHref="#icon-bookmark" />
+                            {/* `href` replaces deprecated `xlinkHref` — SVG 2.0 + React 18 */}
+                            <use href="#icon-bookmark" />
                           </svg>
                           <span className="visually-hidden">In bookmarks</span>
                         </button>
@@ -131,13 +150,14 @@ function FavoritesPage(): JSX.Element {
                         <button
                           className="place-card__bookmark-button place-card__bookmark-button--active button"
                           type="button"
+                          aria-label="Remove from bookmarks"
                         >
                           <svg
                             className="place-card__bookmark-icon"
                             width="18"
                             height="19"
                           >
-                            <use xlinkHref="#icon-bookmark" />
+                            <use href="#icon-bookmark" />
                           </svg>
                           <span className="visually-hidden">In bookmarks</span>
                         </button>
@@ -189,13 +209,14 @@ function FavoritesPage(): JSX.Element {
                         <button
                           className="place-card__bookmark-button place-card__bookmark-button--active button"
                           type="button"
+                          aria-label="Remove from bookmarks"
                         >
                           <svg
                             className="place-card__bookmark-icon"
                             width="18"
                             height="19"
                           >
-                            <use xlinkHref="#icon-bookmark" />
+                            <use href="#icon-bookmark" />
                           </svg>
                           <span className="visually-hidden">In bookmarks</span>
                         </button>
@@ -218,12 +239,13 @@ function FavoritesPage(): JSX.Element {
           </section>
         </div>
       </main>
+
       <footer className="footer container">
         <Link className="footer__logo-link" to="/">
           <img
             className="footer__logo"
             src="img/logo.svg"
-            alt="city stays booking"
+            alt="City stays booking"
             width="64"
             height="33"
           />

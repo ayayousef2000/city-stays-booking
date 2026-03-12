@@ -1,6 +1,30 @@
+// src/pages/offer-page/index.tsx
+// Scaffold page — hardcoded mock data until Redux store is wired up.
+// TODO: Read offer ID from URL via useParams() and fetch via RTK Query
+// TODO: Replace static reviews with useAppSelector(selectReviewsByOfferId)
+// TODO: Replace near-places with useAppSelector(selectNearbyOffers)
+// TODO: Replace header user data with useAppSelector(selectUserData)
+// TODO: Wire review form submission to submitReviewAction (createAsyncThunk)
+//
+// WHY `ReactNode` instead of `JSX.Element`:
+// `JSX.Element` is a legacy type alias for `React.ReactElement<any, any>`.
+// React 18 components can return null, strings, arrays, or Fragments —
+// none of which satisfy `JSX.Element`. `ReactNode` is the correct union type.
+//
+// WHY `href` instead of `xlinkHref` on <use>:
+// `xlinkHref` was part of the SVG 1.1 / XLink namespace and was deprecated
+// in SVG 2.0. React 18 removed support entirely and emits a console warning.
+// The plain `href` attribute is the correct modern syntax.
+//
+// WHY `aria-label` on bookmark and star-rating buttons:
+// Icon-only buttons have no visible text — screen readers cannot announce them
+// without an explicit accessible name. Required by wcag 4.1.2 and
+// jsx-a11y/interactive-supports-focus.
+
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
-function OfferPage(): JSX.Element {
+function OfferPage(): ReactNode {
   return (
     <div className="page">
       <header className="header">
@@ -11,7 +35,7 @@ function OfferPage(): JSX.Element {
                 <img
                   className="header__logo"
                   src="img/logo.svg"
-                  alt="city stays booking"
+                  alt="City stays booking"
                   width="81"
                   height="41"
                 />
@@ -90,6 +114,7 @@ function OfferPage(): JSX.Element {
               </div>
             </div>
           </div>
+
           <div className="offer__container container">
             <div className="offer__wrapper">
               <div className="offer__mark">
@@ -99,13 +124,19 @@ function OfferPage(): JSX.Element {
                 <h1 className="offer__name">
                   Beautiful &amp; luxurious studio at great location
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
+                <button
+                  className="offer__bookmark-button button"
+                  type="button"
+                  aria-label="Add to bookmarks"
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark" />
+                    {/* `href` replaces deprecated `xlinkHref` — SVG 2.0 + React 18 */}
+                    <use href="#icon-bookmark" />
                   </svg>
                   <span className="visually-hidden">To bookmarks</span>
                 </button>
               </div>
+
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
                   <span style={{ width: '80%' }} />
@@ -113,6 +144,7 @@ function OfferPage(): JSX.Element {
                 </div>
                 <span className="offer__rating-value rating__value">4.8</span>
               </div>
+
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
                   Apartment
@@ -124,10 +156,12 @@ function OfferPage(): JSX.Element {
                   Max 4 adults
                 </li>
               </ul>
+
               <div className="offer__price">
                 <b className="offer__price-value">&euro;120</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
+
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
@@ -143,6 +177,7 @@ function OfferPage(): JSX.Element {
                   <li className="offer__inside-item">Fridge</li>
                 </ul>
               </div>
+
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
@@ -171,6 +206,7 @@ function OfferPage(): JSX.Element {
                   </p>
                 </div>
               </div>
+
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">
                   Reviews &middot; <span className="reviews__amount">1</span>
@@ -207,6 +243,7 @@ function OfferPage(): JSX.Element {
                     </div>
                   </li>
                 </ul>
+
                 <form className="reviews__form form" action="#" method="post">
                   <label
                     className="reviews__label form__label"
@@ -228,7 +265,8 @@ function OfferPage(): JSX.Element {
                       title="perfect"
                     >
                       <svg className="form__star-image" width="37" height="33">
-                        <use xlinkHref="#icon-star" />
+                        {/* `href` replaces deprecated `xlinkHref` — SVG 2.0 + React 18 */}
+                        <use href="#icon-star" />
                       </svg>
                       <span className="visually-hidden">perfect</span>
                     </label>
@@ -246,7 +284,7 @@ function OfferPage(): JSX.Element {
                       title="good"
                     >
                       <svg className="form__star-image" width="37" height="33">
-                        <use xlinkHref="#icon-star" />
+                        <use href="#icon-star" />
                       </svg>
                       <span className="visually-hidden">good</span>
                     </label>
@@ -264,7 +302,7 @@ function OfferPage(): JSX.Element {
                       title="not bad"
                     >
                       <svg className="form__star-image" width="37" height="33">
-                        <use xlinkHref="#icon-star" />
+                        <use href="#icon-star" />
                       </svg>
                       <span className="visually-hidden">not bad</span>
                     </label>
@@ -282,7 +320,7 @@ function OfferPage(): JSX.Element {
                       title="badly"
                     >
                       <svg className="form__star-image" width="37" height="33">
-                        <use xlinkHref="#icon-star" />
+                        <use href="#icon-star" />
                       </svg>
                       <span className="visually-hidden">badly</span>
                     </label>
@@ -300,11 +338,12 @@ function OfferPage(): JSX.Element {
                       title="terribly"
                     >
                       <svg className="form__star-image" width="37" height="33">
-                        <use xlinkHref="#icon-star" />
+                        <use href="#icon-star" />
                       </svg>
                       <span className="visually-hidden">terribly</span>
                     </label>
                   </div>
+
                   <textarea
                     className="reviews__textarea form__textarea"
                     id="review"
@@ -332,6 +371,7 @@ function OfferPage(): JSX.Element {
           </div>
           <section className="offer__map map" />
         </section>
+
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">
@@ -361,13 +401,14 @@ function OfferPage(): JSX.Element {
                     <button
                       className="place-card__bookmark-button place-card__bookmark-button--active button"
                       type="button"
+                      aria-label="Remove from bookmarks"
                     >
                       <svg
                         className="place-card__bookmark-icon"
                         width="18"
                         height="19"
                       >
-                        <use xlinkHref="#icon-bookmark" />
+                        <use href="#icon-bookmark" />
                       </svg>
                       <span className="visually-hidden">In bookmarks</span>
                     </button>
@@ -408,13 +449,14 @@ function OfferPage(): JSX.Element {
                     <button
                       className="place-card__bookmark-button button"
                       type="button"
+                      aria-label="Add to bookmarks"
                     >
                       <svg
                         className="place-card__bookmark-icon"
                         width="18"
                         height="19"
                       >
-                        <use xlinkHref="#icon-bookmark" />
+                        <use href="#icon-bookmark" />
                       </svg>
                       <span className="visually-hidden">To bookmarks</span>
                     </button>
@@ -458,13 +500,14 @@ function OfferPage(): JSX.Element {
                     <button
                       className="place-card__bookmark-button button"
                       type="button"
+                      aria-label="Add to bookmarks"
                     >
                       <svg
                         className="place-card__bookmark-icon"
                         width="18"
                         height="19"
                       >
-                        <use xlinkHref="#icon-bookmark" />
+                        <use href="#icon-bookmark" />
                       </svg>
                       <span className="visually-hidden">To bookmarks</span>
                     </button>

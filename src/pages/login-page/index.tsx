@@ -1,6 +1,22 @@
+// src/pages/login-page/index.tsx
+// Scaffold page — static markup until Redux auth slice is wired up.
+// TODO: Connect form submission to loginAction (createAsyncThunk)
+// TODO: Redirect to '/' on successful login via useAppSelector(selectAuthStatus)
+// TODO: Show validation errors from API response via RTK Query or thunk rejection
+//
+// WHY `ReactNode` instead of `JSX.Element`:
+// `JSX.Element` is a legacy type alias for `React.ReactElement<any, any>`.
+// React 18 components can return null, strings, arrays, or Fragments —
+// none of which satisfy `JSX.Element`. `ReactNode` is the correct union type.
+//
+// NOTE: `htmlFor` on <label> is the correct React equivalent of HTML `for`.
+// Both email and password inputs have associated labels — required for
+// wcag 1.3.1 (Info and Relationships) and jsx-a11y/label-has-associated-control.
+
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
-function LoginPage(): JSX.Element {
+function LoginPage(): ReactNode {
   return (
     <div className="page page--gray page--login">
       <header className="header">
@@ -11,7 +27,7 @@ function LoginPage(): JSX.Element {
                 <img
                   className="header__logo"
                   src="img/logo.svg"
-                  alt="city stays booking"
+                  alt="City stays booking"
                   width="81"
                   height="41"
                 />
