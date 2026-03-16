@@ -9,6 +9,7 @@
 
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 
 import { renderWithRouter } from '@/test-utils/render-with-router';
 
