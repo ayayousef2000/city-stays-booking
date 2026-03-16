@@ -10,12 +10,6 @@ import { Link } from 'react-router-dom';
 import OfferCard from '@/components/offer-card';
 import type { OfferCardProps } from '@/components/offer-card';
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
-interface MainPageProps {
-  offersCount: number;
-}
-
 // ── Mock Data ─────────────────────────────────────────────────────────────────
 // Temporary scaffold — will be replaced by Redux store data.
 
@@ -84,7 +78,10 @@ const ACTIVE_CITY = 'Amsterdam';
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-function MainPage({ offersCount }: MainPageProps): ReactNode {
+function MainPage(): ReactNode {
+  // TODO: Replace with useAppSelector(selectFilteredOffers).length once Redux is wired.
+  const offersCount = MOCK_OFFERS.length;
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -168,7 +165,6 @@ function MainPage({ offersCount }: MainPageProps): ReactNode {
                 >
                   Popular
                   <svg className="places__sorting-arrow" width="7" height="4">
-                    {/* href replaces deprecated xlinkHref — SVG 2.0 */}
                     <use href="#icon-arrow-select" />
                   </svg>
                 </span>

@@ -1,0 +1,49 @@
+// src/components/private-route/index.tsx
+// Guards routes that require authentication.
+//
+// USAGE:
+//   <Route
+//     path="/favorites"
+//     element={
+//       <PrivateRoute authorizationStatus={authorizationStatus}>
+//         <FavoritesPage />
+//       </PrivateRoute>
+//     }
+//   />
+//
+// NOTE: The `Unknown` state renders `null` (blank screen) to avoid a flash of
+// the login redirect while the auth check is in flight.
+// TODO: Replace `null` with <LoadingSpinner /> once the Redux auth slice is implemented.
+
+import type { ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
+
+import { AuthorizationStatus } from '@/types/auth';
+
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+interface PrivateRouteProps {
+  /** Current authorization state — drives redirect logic. */
+  authorizationStatus: AuthorizationStatus;
+  /** The protected page component to render when authorized. */
+  children: ReactNode;
+}
+
+// ── Component ─────────────────────────────────────────────────────────────────
+
+function PrivateRoute({
+  authorizationStatus,
+  children,
+}: PrivateRouteProps): ReactNode {
+  if (authorizationStatus === AuthorizationStatus.Unknown) {
+    return null;
+  }
+
+  if (authorizationStatus === AuthorizationStatus.NoAuth) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
+
+export default PrivateRoute;

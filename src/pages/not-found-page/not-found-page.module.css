@@ -1,0 +1,256 @@
+/*
+ * not-found-page.module.css
+ * Scoped styles for the 404 Not Found page.
+ *
+ * DESIGN TOKENS:
+ * These CSS custom properties mirror the app's blue accent palette
+ * used throughout public/css/main.css. Keeping them consistent ensures
+ * the 404 page feels native to the app, not bolted on.
+ */
+
+/* ── Tokens ─────────────────────────────────────────────────────────────────── */
+
+.page {
+  --color-accent: #4481c3;
+  --color-accent-dark: #2d6ab0;
+  --color-accent-light: #74b9ff;
+  --color-text-primary: #2c3e50;
+  --color-text-secondary: #6b7c93;
+  --color-bg-start: #f0f4fa;
+  --color-bg-mid: #e8edf5;
+  --color-bg-end: #dde4f0;
+}
+
+/* ── Hero section ───────────────────────────────────────────────────────────── */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 72px); /* 72px = app header height */
+  padding: 48px 24px;
+  background: radial-gradient(
+    ellipse at 60% 40%,
+    var(--color-bg-start) 0%,
+    var(--color-bg-mid) 60%,
+    var(--color-bg-end) 100%
+  );
+  text-align: center;
+
+  /* Staggered entrance — children animate in sequence via animation-delay */
+  animation: fadeInUp 0.5s ease both;
+}
+
+/* ── Error code ─────────────────────────────────────────────────────────────── */
+
+.errorCode {
+  /*
+   * `clamp(min, preferred, max)` scales the font fluidly between viewports:
+   *   - 320px mobile  → ~120px
+   *   - 1280px desktop → 200px
+   * No media query breakpoints needed.
+   */
+  font-size: clamp(120px, 25vw, 200px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-accent);
+  margin: 0 0 8px;
+
+  /* Depth without an image asset */
+  text-shadow: 0 4px 24px rgba(68, 129, 195, 0.18);
+
+  /* Decorative only — no need to be in the tab order */
+  user-select: none;
+
+  animation: fadeInUp 0.5s ease 0.05s both;
+}
+
+/* ── Divider ────────────────────────────────────────────────────────────────── */
+
+.divider {
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent),
+    var(--color-accent-light)
+  );
+  border: none;
+  border-radius: 2px;
+  margin: 24px auto;
+
+  animation: scaleIn 0.4s ease 0.15s both;
+}
+
+/* ── Heading ────────────────────────────────────────────────────────────────── */
+
+.heading {
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 12px;
+
+  animation: fadeInUp 0.5s ease 0.2s both;
+}
+
+/* ── Body copy ──────────────────────────────────────────────────────────────── */
+
+.body {
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  max-width: 420px;
+  line-height: 1.6;
+  margin: 0 auto 32px;
+
+  animation: fadeInUp 0.5s ease 0.25s both;
+}
+
+/* ── CTA wrapper ────────────────────────────────────────────────────────────── */
+
+.ctaWrapper {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  animation: fadeInUp 0.5s ease 0.3s both;
+}
+
+/* ── Shared button base ─────────────────────────────────────────────────────── */
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  /* Smooth all interactive properties in one declaration */
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+/* WHY target the SVG directly:
+ * SVGs default to `display: inline` and `vertical-align: baseline`,
+ * which causes pixel misalignment with adjacent text even inside a flex
+ * container. `display: block` removes the inline baseline offset.
+ * `flex-shrink: 0` prevents the icon from squishing on narrow viewports.
+ */
+.cta svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+.cta:focus-visible {
+  /* WCAG 2.4.7 — keyboard focus must be visible */
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ── Primary CTA ────────────────────────────────────────────────────────────── */
+
+.ctaPrimary {
+  background: var(--color-accent);
+  color: #ffffff;
+  border: 1.5px solid var(--color-accent);
+}
+
+.ctaPrimary:hover {
+  background: var(--color-accent-dark);
+  border-color: var(--color-accent-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(68, 129, 195, 0.3);
+}
+
+.ctaPrimary:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* ── Secondary CTA ──────────────────────────────────────────────────────────── */
+
+.ctaSecondary {
+  background: transparent;
+  color: var(--color-accent);
+  border: 1.5px solid var(--color-accent);
+}
+
+.ctaSecondary:hover {
+  background: var(--color-accent);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(68, 129, 195, 0.2);
+}
+
+.ctaSecondary:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* ── Keyframe animations ────────────────────────────────────────────────────── */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────────── */
+
+/*
+ * Inline styles cannot do this at all.
+ * On narrow viewports, stack CTAs vertically and tighten spacing.
+ */
+@media (max-width: 480px) {
+  .hero {
+    padding: 32px 16px;
+  }
+
+  .ctaWrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cta {
+    justify-content: center;
+  }
+}
+
+/*
+ * Respect user preference for reduced motion.
+ * WCAG 2.3.3 — disable animations for users who have requested it.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .hero,
+  .errorCode,
+  .divider,
+  .heading,
+  .body,
+  .ctaWrapper {
+    animation: none;
+  }
+}

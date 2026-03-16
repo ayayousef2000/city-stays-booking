@@ -1,27 +1,29 @@
 // src/App.tsx
 // Root application component.
-//
-// WHY `ReactNode` instead of `JSX.Element`:
-// `JSX.Element` is a legacy type alias that maps to `React.ReactElement<any, any>`.
-// In React 18+, components can legitimately return `null`, strings, arrays,
-// or Fragments — none of which are `JSX.Element`. `ReactNode` is the correct
-// union type: ReactElement | string | number | boolean | null | undefined.
-// TypeScript will flag the mismatch as an error with strict mode enabled.
-//
-// NOTE: `offersCount` as a prop is a temporary scaffold.
-// TODO: Replace with `useAppSelector(selectOffersCount)` once Redux is wired up.
-// The Redux store is the single source of truth for all shared state.
+// Single responsibility: composes the application shell.
+// Routing lives in src/app/app-router.tsx.
+// Route paths live in src/app/routes.ts.
 
 import type { ReactNode } from 'react';
 
-import MainPage from '@/pages/main-page';
+import AppRouter from '@/app/app-router';
+import { type AuthorizationStatus } from '@/types/auth';
+
+// ── Types ─────────────────────────────────────────────────────────────────────
 
 interface AppProps {
-  offersCount: number;
+  /**
+   * Drives PrivateRoute redirect logic.
+   * TODO: Remove once Redux auth slice is implemented.
+   * Replace with: const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+   */
+  authorizationStatus: AuthorizationStatus;
 }
 
-function App({ offersCount }: AppProps): ReactNode {
-  return <MainPage offersCount={offersCount} />;
+// ── Component ─────────────────────────────────────────────────────────────────
+
+function App({ authorizationStatus }: AppProps): ReactNode {
+  return <AppRouter authorizationStatus={authorizationStatus} />;
 }
 
 export default App;
