@@ -5,15 +5,20 @@ import { useState } from 'react';
 import type { ReactNode } from 'react';
 
 import OfferCard from '@/components/offer-card';
-import type { OfferCardProps } from '@/components/offer-card';
 import type { Offer } from '@/types/offer';
+
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+type CardType = 'cities' | 'near-places' | 'favorites';
 
 interface OfferListProps {
   offers: Offer[];
-  cardType?: OfferCardProps['cardType'];
+  cardType?: CardType;
   className?: string;
   onActiveOfferChange?: (id: string | null) => void;
 }
+
+// ── Component ─────────────────────────────────────────────────────────────────
 
 function OfferList({
   offers,
