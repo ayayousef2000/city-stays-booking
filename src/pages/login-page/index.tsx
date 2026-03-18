@@ -16,6 +16,8 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
+import { AppRoute } from '@/app/routes';
+
 function LoginPage(): ReactNode {
   return (
     <div className="page page--gray page--login">
@@ -23,7 +25,7 @@ function LoginPage(): ReactNode {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <Link className="header__logo-link" to="/">
+              <Link className="header__logo-link" to={AppRoute.Main}>
                 <img
                   className="header__logo"
                   src="img/logo.svg"
@@ -78,7 +80,7 @@ function LoginPage(): ReactNode {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <Link className="locations__item-link" to="/">
+              <Link className="locations__item-link" to={AppRoute.Main}>
                 <span>Amsterdam</span>
               </Link>
             </div>

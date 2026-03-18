@@ -17,6 +17,8 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
+import { AppRoute } from '@/app/routes';
+
 function FavoritesPage(): ReactNode {
   return (
     <div className="page">
@@ -24,7 +26,7 @@ function FavoritesPage(): ReactNode {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <Link className="header__logo-link" to="/">
+              <Link className="header__logo-link" to={AppRoute.Main}>
                 <img
                   className="header__logo"
                   src="img/logo.svg"
@@ -39,7 +41,7 @@ function FavoritesPage(): ReactNode {
                 <li className="header__nav-item user">
                   <Link
                     className="header__nav-link header__nav-link--profile"
-                    to="/favorites"
+                    to={AppRoute.Favorites}
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper" />
                     <span className="header__user-name user__name">
@@ -49,7 +51,7 @@ function FavoritesPage(): ReactNode {
                   </Link>
                 </li>
                 <li className="header__nav-item">
-                  <Link className="header__nav-link" to="/login">
+                  <Link className="header__nav-link" to={AppRoute.Login}>
                     <span className="header__signout">Sign out</span>
                   </Link>
                 </li>
@@ -67,7 +69,7 @@ function FavoritesPage(): ReactNode {
               <li className="favorites__locations-items">
                 <div className="favorites__locations locations locations--current">
                   <div className="locations__item">
-                    <Link className="locations__item-link" to="/">
+                    <Link className="locations__item-link" to={AppRoute.Main}>
                       <span>Amsterdam</span>
                     </Link>
                   </div>
@@ -78,7 +80,7 @@ function FavoritesPage(): ReactNode {
                       <span>Premium</span>
                     </div>
                     <div className="favorites__image-wrapper place-card__image-wrapper">
-                      <Link to="/offer">
+                      <Link to={AppRoute.Offer}>
                         <img
                           className="place-card__image"
                           src="img/apartment-small-03.jpg"
@@ -119,7 +121,7 @@ function FavoritesPage(): ReactNode {
                         </div>
                       </div>
                       <h2 className="place-card__name">
-                        <Link to="/offer">
+                        <Link to={AppRoute.Offer}>
                           Nice, cozy, warm big bed apartment
                         </Link>
                       </h2>
@@ -129,7 +131,7 @@ function FavoritesPage(): ReactNode {
 
                   <article className="favorites__card place-card">
                     <div className="favorites__image-wrapper place-card__image-wrapper">
-                      <Link to="/offer">
+                      <Link to={AppRoute.Offer}>
                         <img
                           className="place-card__image"
                           src="img/room-small.jpg"
@@ -169,7 +171,7 @@ function FavoritesPage(): ReactNode {
                         </div>
                       </div>
                       <h2 className="place-card__name">
-                        <Link to="/offer">Wood and stone place</Link>
+                        <Link to={AppRoute.Offer}>Wood and stone place</Link>
                       </h2>
                       <p className="place-card__type">Private room</p>
                     </div>
@@ -180,7 +182,7 @@ function FavoritesPage(): ReactNode {
               <li className="favorites__locations-items">
                 <div className="favorites__locations locations locations--current">
                   <div className="locations__item">
-                    <Link className="locations__item-link" to="/">
+                    <Link className="locations__item-link" to={AppRoute.Main}>
                       <span>Cologne</span>
                     </Link>
                   </div>
@@ -188,7 +190,7 @@ function FavoritesPage(): ReactNode {
                 <div className="favorites__places">
                   <article className="favorites__card place-card">
                     <div className="favorites__image-wrapper place-card__image-wrapper">
-                      <Link to="/offer">
+                      <Link to={AppRoute.Offer}>
                         <img
                           className="place-card__image"
                           src="img/apartment-small-04.jpg"
@@ -228,7 +230,7 @@ function FavoritesPage(): ReactNode {
                         </div>
                       </div>
                       <h2 className="place-card__name">
-                        <Link to="/offer">White castle</Link>
+                        <Link to={AppRoute.Offer}>White castle</Link>
                       </h2>
                       <p className="place-card__type">Apartment</p>
                     </div>
@@ -241,7 +243,7 @@ function FavoritesPage(): ReactNode {
       </main>
 
       <footer className="footer container">
-        <Link className="footer__logo-link" to="/">
+        <Link className="footer__logo-link" to={AppRoute.Main}>
           <img
             className="footer__logo"
             src="img/logo.svg"

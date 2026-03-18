@@ -7,64 +7,11 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
+import { AppRoute } from '@/app/routes';
 import OfferCard from '@/components/offer-card';
-import type { OfferCardProps } from '@/components/offer-card';
+import { MOCK_OFFERS } from '@/mocks/offers';
 
-// ── Mock Data ─────────────────────────────────────────────────────────────────
-// Temporary scaffold — will be replaced by Redux store data.
-
-const MOCK_OFFERS: OfferCardProps[] = [
-  {
-    id: '1',
-    imageUrl: 'img/apartment-01.jpg',
-    title: 'Beautiful & luxurious apartment at great location',
-    price: 120,
-    rating: 4,
-    type: 'Apartment',
-    isPremium: true,
-    isBookmarked: false,
-  },
-  {
-    id: '2',
-    imageUrl: 'img/room.jpg',
-    title: 'Nice, cozy, warm big bed apartment',
-    price: 80,
-    rating: 4,
-    type: 'Private room',
-    isPremium: false,
-    isBookmarked: true,
-  },
-  {
-    id: '3',
-    imageUrl: 'img/apartment-02.jpg',
-    title: 'Penthouse, 4-5 rooms + 5 balconies',
-    price: 132,
-    rating: 4,
-    type: 'Apartment',
-    isPremium: false,
-    isBookmarked: false,
-  },
-  {
-    id: '4',
-    imageUrl: 'img/apartment-03.jpg',
-    title: 'Tile House',
-    price: 169,
-    rating: 5,
-    type: 'House',
-    isPremium: false,
-    isBookmarked: false,
-  },
-  {
-    id: '5',
-    imageUrl: 'img/studio-01.jpg',
-    title: 'The house in forest',
-    price: 149,
-    rating: 4,
-    type: 'House',
-    isPremium: false,
-    isBookmarked: false,
-  },
-];
+// ── Constants ─────────────────────────────────────────────────────────────────
 
 const CITIES = [
   'Paris',
@@ -90,7 +37,7 @@ function MainPage(): ReactNode {
             <div className="header__left">
               <Link
                 className="header__logo-link header__logo-link--active"
-                to="/"
+                to={AppRoute.Main}
               >
                 <img
                   className="header__logo"
@@ -106,7 +53,7 @@ function MainPage(): ReactNode {
                 <li className="header__nav-item user">
                   <Link
                     className="header__nav-link header__nav-link--profile"
-                    to="/favorites"
+                    to={AppRoute.Favorites}
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper" />
                     <span className="header__user-name user__name">
@@ -116,7 +63,7 @@ function MainPage(): ReactNode {
                   </Link>
                 </li>
                 <li className="header__nav-item">
-                  <Link className="header__nav-link" to="/login">
+                  <Link className="header__nav-link" to={AppRoute.Login}>
                     <span className="header__signout">Sign out</span>
                   </Link>
                 </li>
@@ -138,7 +85,10 @@ function MainPage(): ReactNode {
                       <span>{city}</span>
                     </span>
                   ) : (
-                    <Link className="locations__item-link tabs__item" to="/">
+                    <Link
+                      className="locations__item-link tabs__item"
+                      to={AppRoute.Main}
+                    >
                       <span>{city}</span>
                     </Link>
                   )}

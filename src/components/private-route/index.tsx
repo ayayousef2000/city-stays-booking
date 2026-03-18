@@ -18,6 +18,7 @@
 import type { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 
+import { AppRoute } from '@/app/routes';
 import { AuthorizationStatus } from '@/types/auth';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -40,7 +41,7 @@ function PrivateRoute({
   }
 
   if (authorizationStatus === AuthorizationStatus.NoAuth) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to={AppRoute.Login} replace />;
   }
 
   return children;

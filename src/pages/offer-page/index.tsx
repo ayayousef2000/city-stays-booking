@@ -24,6 +24,8 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
+import { AppRoute } from '@/app/routes';
+
 function OfferPage(): ReactNode {
   return (
     <div className="page">
@@ -31,7 +33,7 @@ function OfferPage(): ReactNode {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <Link className="header__logo-link" to="/">
+              <Link className="header__logo-link" to={AppRoute.Main}>
                 <img
                   className="header__logo"
                   src="img/logo.svg"
@@ -46,7 +48,7 @@ function OfferPage(): ReactNode {
                 <li className="header__nav-item user">
                   <Link
                     className="header__nav-link header__nav-link--profile"
-                    to="/favorites"
+                    to={AppRoute.Favorites}
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper" />
                     <span className="header__user-name user__name">
@@ -56,7 +58,7 @@ function OfferPage(): ReactNode {
                   </Link>
                 </li>
                 <li className="header__nav-item">
-                  <Link className="header__nav-link" to="/login">
+                  <Link className="header__nav-link" to={AppRoute.Login}>
                     <span className="header__signout">Sign out</span>
                   </Link>
                 </li>
@@ -380,7 +382,7 @@ function OfferPage(): ReactNode {
             <div className="near-places__list places__list">
               <article className="near-places__card place-card">
                 <div className="near-places__image-wrapper place-card__image-wrapper">
-                  <Link to="/offer">
+                  <Link to={AppRoute.Offer}>
                     <img
                       className="place-card__image"
                       src="img/room.jpg"
@@ -420,7 +422,7 @@ function OfferPage(): ReactNode {
                     </div>
                   </div>
                   <h2 className="place-card__name">
-                    <Link to="/offer">Wood and stone place</Link>
+                    <Link to={AppRoute.Offer}>Wood and stone place</Link>
                   </h2>
                   <p className="place-card__type">Room</p>
                 </div>
@@ -428,7 +430,7 @@ function OfferPage(): ReactNode {
 
               <article className="near-places__card place-card">
                 <div className="near-places__image-wrapper place-card__image-wrapper">
-                  <Link to="/offer">
+                  <Link to={AppRoute.Offer}>
                     <img
                       className="place-card__image"
                       src="img/apartment-02.jpg"
@@ -468,7 +470,7 @@ function OfferPage(): ReactNode {
                     </div>
                   </div>
                   <h2 className="place-card__name">
-                    <Link to="/offer">Canal View Prinsengracht</Link>
+                    <Link to={AppRoute.Offer}>Canal View Prinsengracht</Link>
                   </h2>
                   <p className="place-card__type">Apartment</p>
                 </div>
@@ -479,7 +481,7 @@ function OfferPage(): ReactNode {
                   <span>Premium</span>
                 </div>
                 <div className="near-places__image-wrapper place-card__image-wrapper">
-                  <Link to="/offer">
+                  <Link to={AppRoute.Offer}>
                     <img
                       className="place-card__image"
                       src="img/apartment-03.jpg"
@@ -519,7 +521,9 @@ function OfferPage(): ReactNode {
                     </div>
                   </div>
                   <h2 className="place-card__name">
-                    <Link to="/offer">Nice, cozy, warm big bed apartment</Link>
+                    <Link to={AppRoute.Offer}>
+                      Nice, cozy, warm big bed apartment
+                    </Link>
                   </h2>
                   <p className="place-card__type">Apartment</p>
                 </div>
