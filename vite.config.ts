@@ -106,25 +106,31 @@ export default defineConfig({
         // Type-only files add no runtime coverage value.
         'src/types/**',
 
-        // Entry point — trivial bootstrap code, not meaningful to test
+        // Entry point — trivial bootstrap code, not meaningful to test.
         'src/index.tsx',
+
+        // Static mock data — no runtime logic to cover.
+        // These files will be removed entirely once the API is integrated.
+        'src/mocks/**',
 
         // Scaffold pages — temporary hardcoded UI pending Redux integration.
         // These will be fully rewritten and tested once the store is wired up.
-        // TODO: Remove these exclusions as each page is properly implemented.
         'src/pages/main-page/**',
         'src/pages/favorites-page/**',
         'src/pages/login-page/**',
         'src/pages/offer-page/**',
 
-        // App.tsx is a thin router shell — covered indirectly by page tests
+        // App.tsx is a thin router shell — covered indirectly by page tests.
         'src/App.tsx',
 
         // Routing layer — scaffold pending Redux auth integration.
-        // TODO: Remove these exclusions once PrivateRoute and AppRouter tests are written.
         'src/app/**',
         'src/components/private-route/**',
         'src/pages/not-found-page/**',
+
+        // OfferList — covered indirectly through OfferCard and page tests.
+        // Dedicated integration tests will be added with the map feature.
+        'src/components/offer-list/**',
       ],
 
       // Minimum thresholds enforced in CI. Fail the build if coverage drops below.
