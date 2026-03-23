@@ -131,6 +131,9 @@ export default defineConfig({
         // OfferList — covered indirectly through OfferCard and page tests.
         // Dedicated integration tests will be added with the map feature.
         'src/components/offer-list/**',
+
+        // CommentForm — dedicated tests will be added when Redux submit action is wired.
+        'src/components/comment-form/**',
       ],
 
       // Minimum thresholds enforced in CI. Fail the build if coverage drops below.
