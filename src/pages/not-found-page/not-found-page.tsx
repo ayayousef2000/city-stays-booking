@@ -1,4 +1,4 @@
-// src/pages/not-found-page/index.tsx
+// src/pages/not-found-page/not-found-page.tsx
 // 404 Not Found page.
 
 import type { ReactNode } from 'react';
