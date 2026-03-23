@@ -1,32 +1,37 @@
-// src/pages/offer-page/index.tsx
-// Scaffold page — hardcoded mock data until Redux store is wired up.
-// TODO: Read offer ID from URL via useParams() and fetch via RTK Query
-// TODO: Replace static reviews with useAppSelector(selectReviewsByOfferId)
-// TODO: Replace near-places with useAppSelector(selectNearbyOffers)
-// TODO: Replace header user data with useAppSelector(selectUserData)
-// TODO: Wire review form submission to submitReviewAction (createAsyncThunk)
+// src/pages/offer-page/offer-page.tsx
+// Scaffold page — static offer detail until RTK Query is integrated.
 //
-// WHY `ReactNode` instead of `JSX.Element`:
-// `JSX.Element` is a legacy type alias for `React.ReactElement<any, any>`.
-// React 18 components can return null, strings, arrays, or Fragments —
-// none of which satisfy `JSX.Element`. `ReactNode` is the correct union type.
-//
-// WHY `href` instead of `xlinkHref` on <use>:
-// `xlinkHref` was part of the SVG 1.1 / XLink namespace and was deprecated
-// in SVG 2.0. React 18 removed support entirely and emits a console warning.
-// The plain `href` attribute is the correct modern syntax.
+// WHY `offers` is accepted but not yet used:
+// The prop is threaded through the routing layer now so AppRouter has a
+// consistent interface across all pages. The migration to useParams() + a
+// Redux selector is then a single-file change with no touch to AppRouter or App.
 //
 // WHY `aria-label` on bookmark and star-rating buttons:
 // Icon-only buttons have no visible text — screen readers cannot announce them
-// without an explicit accessible name. Required by wcag 4.1.2 and
+// without an explicit accessible name. Required by WCAG 4.1.2 and
 // jsx-a11y/interactive-supports-focus.
 
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppRoute } from '@/app/routes';
+import CommentForm from '@/components/comment-form';
+import type { Offer } from '@/types/offer';
 
-function OfferPage(): ReactNode {
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+interface OfferPageProps {
+  /**
+   * Full rental offer catalogue.
+   * @remarks The page will derive its specific offer via `useParams()` + selector once Redux is integrated.
+   */
+  offers: Offer[];
+}
+
+// ── Component ─────────────────────────────────────────────────────────────────
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function OfferPage({ offers: _offers }: OfferPageProps): ReactNode {
   return (
     <div className="page">
       <header className="header">
@@ -132,7 +137,7 @@ function OfferPage(): ReactNode {
                   aria-label="Add to bookmarks"
                 >
                   <svg className="offer__bookmark-icon" width="31" height="33">
-                    {/* `href` replaces deprecated `xlinkHref` — SVG 2.0 + React 18 */}
+                    {/* href replaces deprecated xlinkHref — SVG 2.0 + React 18 */}
                     <use href="#icon-bookmark" />
                   </svg>
                   <span className="visually-hidden">To bookmarks</span>
@@ -246,128 +251,7 @@ function OfferPage(): ReactNode {
                   </li>
                 </ul>
 
-                <form className="reviews__form form" action="#" method="post">
-                  <label
-                    className="reviews__label form__label"
-                    htmlFor="review"
-                  >
-                    Your review
-                  </label>
-                  <div className="reviews__rating-form form__rating">
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      value="5"
-                      id="5-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="5-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="perfect"
-                    >
-                      <svg className="form__star-image" width="37" height="33">
-                        {/* `href` replaces deprecated `xlinkHref` — SVG 2.0 + React 18 */}
-                        <use href="#icon-star" />
-                      </svg>
-                      <span className="visually-hidden">perfect</span>
-                    </label>
-
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      value="4"
-                      id="4-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="4-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="good"
-                    >
-                      <svg className="form__star-image" width="37" height="33">
-                        <use href="#icon-star" />
-                      </svg>
-                      <span className="visually-hidden">good</span>
-                    </label>
-
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      value="3"
-                      id="3-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="3-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="not bad"
-                    >
-                      <svg className="form__star-image" width="37" height="33">
-                        <use href="#icon-star" />
-                      </svg>
-                      <span className="visually-hidden">not bad</span>
-                    </label>
-
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      value="2"
-                      id="2-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="2-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="badly"
-                    >
-                      <svg className="form__star-image" width="37" height="33">
-                        <use href="#icon-star" />
-                      </svg>
-                      <span className="visually-hidden">badly</span>
-                    </label>
-
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      value="1"
-                      id="1-star"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="1-star"
-                      className="reviews__rating-label form__rating-label"
-                      title="terribly"
-                    >
-                      <svg className="form__star-image" width="37" height="33">
-                        <use href="#icon-star" />
-                      </svg>
-                      <span className="visually-hidden">terribly</span>
-                    </label>
-                  </div>
-
-                  <textarea
-                    className="reviews__textarea form__textarea"
-                    id="review"
-                    name="review"
-                    placeholder="Tell how was your stay, what you like and what can be improved"
-                  />
-                  <div className="reviews__button-wrapper">
-                    <p className="reviews__help">
-                      To submit review please make sure to set{' '}
-                      <span className="reviews__star">rating</span> and describe
-                      your stay with at least{' '}
-                      <b className="reviews__text-amount">50 characters</b>.
-                    </p>
-                    <button
-                      className="reviews__submit form__submit button"
-                      type="submit"
-                      disabled
-                    >
-                      Submit
-                    </button>
-                  </div>
-                </form>
+                <CommentForm />
               </section>
             </div>
           </div>

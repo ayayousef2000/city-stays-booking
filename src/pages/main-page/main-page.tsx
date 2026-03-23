@@ -1,15 +1,11 @@
-// src/pages/main-page/index.tsx
-// Scaffold page — hardcoded mock data until Redux store is wired up.
-// TODO: Replace MOCK_OFFERS with useAppSelector(selectFilteredOffers)
-// TODO: Replace hardcoded city tabs with useAppSelector(selectCities)
-// TODO: Replace header user data with useAppSelector(selectUserData)
+// src/pages/main-page/main-page.tsx
 
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppRoute } from '@/app/routes';
-import OfferCard from '@/components/offer-card';
-import { MOCK_OFFERS } from '@/mocks/offers';
+import OfferList from '@/components/offer-list';
+import type { Offer } from '@/types/offer';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -23,12 +19,19 @@ const CITIES = [
 ];
 const ACTIVE_CITY = 'Amsterdam';
 
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+interface MainPageProps {
+  /**
+   * Full rental offer catalogue rendered as the main listing.
+   * @remarks Replaced by `useAppSelector(selectFilteredOffers)` once the Redux offer slice is integrated.
+   */
+  offers: Offer[];
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
-function MainPage(): ReactNode {
-  // TODO: Replace with useAppSelector(selectFilteredOffers).length once Redux is wired.
-  const offersCount = MOCK_OFFERS.length;
-
+function MainPage({ offers }: MainPageProps): ReactNode {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -103,7 +106,7 @@ function MainPage(): ReactNode {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {offersCount} places to stay in {ACTIVE_CITY}
+                {offers.length} places to stay in {ACTIVE_CITY}
               </b>
 
               <form className="places__sorting" action="#" method="get">
@@ -128,11 +131,11 @@ function MainPage(): ReactNode {
                 </ul>
               </form>
 
-              <div className="cities__places-list places__list tabs__content">
-                {MOCK_OFFERS.map((offer) => (
-                  <OfferCard key={offer.id} {...offer} />
-                ))}
-              </div>
+              <OfferList
+                offers={offers}
+                cardType="cities"
+                className="cities__places-list places__list tabs__content"
+              />
             </section>
 
             <div className="cities__right-section">
