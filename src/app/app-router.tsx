@@ -12,6 +12,7 @@ import MainPage from '@/pages/main-page';
 import NotFoundPage from '@/pages/not-found-page';
 import OfferPage from '@/pages/offer-page';
 import { type AuthorizationStatus } from '@/types/auth';
+import type { Offer } from '@/types/offer';
 
 import { AppRoute } from './routes';
 
@@ -20,34 +21,36 @@ import { AppRoute } from './routes';
 interface AppRouterProps {
   /**
    * Drives PrivateRoute redirect logic.
-   * TODO: Remove once Redux auth slice is implemented.
-   * Replace with: const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+   * @remarks Replaced by `useAppSelector(selectAuthorizationStatus)` once the Redux auth slice is integrated.
    */
   authorizationStatus: AuthorizationStatus;
+  /**
+   * Full rental offer catalogue distributed to pages that render offer lists.
+   * @remarks Replaced by store-connected selectors inside each page once the Redux offer slice is integrated.
+   */
+  offers: Offer[];
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-function AppRouter({ authorizationStatus }: AppRouterProps): ReactNode {
+function AppRouter({ authorizationStatus, offers }: AppRouterProps): ReactNode {
   return (
     <Routes>
       {/* ── Public routes ─────────────────────────────────────────────── */}
 
-      <Route path={AppRoute.Main} element={<MainPage />} />
+      <Route path={AppRoute.Main} element={<MainPage offers={offers} />} />
 
       <Route path={AppRoute.Login} element={<LoginPage />} />
 
-      {/* TODO: OfferPage — read :id via useParams(), fetch via fetchOfferAction once Redux is wired. */}
-      <Route path={AppRoute.Offer} element={<OfferPage />} />
+      <Route path={AppRoute.Offer} element={<OfferPage offers={offers} />} />
 
       {/* ── Private routes ────────────────────────────────────────────── */}
 
-      {/* TODO: Remove authorizationStatus prop once Redux auth slice is implemented. */}
       <Route
         path={AppRoute.Favorites}
         element={
           <PrivateRoute authorizationStatus={authorizationStatus}>
-            <FavoritesPage />
+            <FavoritesPage offers={offers} />
           </PrivateRoute>
         }
       />

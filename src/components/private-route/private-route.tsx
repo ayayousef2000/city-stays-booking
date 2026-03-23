@@ -1,4 +1,4 @@
-// src/components/private-route/index.tsx
+// src/components/private-route/private-route.tsx
 // Guards routes that require authentication.
 //
 // USAGE:
@@ -11,9 +11,10 @@
 //     }
 //   />
 //
-// NOTE: The `Unknown` state renders `null` (blank screen) to avoid a flash of
-// the login redirect while the auth check is in flight.
-// TODO: Replace `null` with <LoadingSpinner /> once the Redux auth slice is implemented.
+// WHY the `Unknown` state renders `null`:
+// Renders a blank screen to avoid a flash of the login redirect while the
+// auth check is in flight. Replace with <LoadingSpinner /> once the Redux
+// auth slice is implemented.
 
 import type { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';

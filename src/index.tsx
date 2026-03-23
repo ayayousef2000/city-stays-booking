@@ -5,14 +5,6 @@
 //   HelmetProvider  — manages <head> tags (title, meta, og) per-page
 //   BrowserRouter   — provides routing context to all React Router hooks
 //   App             — root component tree + Routes
-//
-// TODO — Redux integration (next architectural step):
-// When @reduxjs/toolkit store is created, wrap with <Provider store={store}>
-// between HelmetProvider and BrowserRouter. Then:
-//   1. Remove the `authorizationStatus` prop from App.
-//   2. In App.tsx, read: const authorizationStatus = useAppSelector(selectAuthorizationStatus)
-//   3. In the auth slice, set initialState.status = AuthorizationStatus.Unknown
-//      and dispatch checkAuthAction() from App's useEffect on mount.
 
 import React from 'react';
 import { HelmetProvider } from 'react-helmet-async';
@@ -20,13 +12,13 @@ import { BrowserRouter } from 'react-router-dom';
 
 import ReactDOM from 'react-dom/client';
 
-import App from '@/App';
+import App from '@/app/app';
+import { MOCK_OFFERS } from '@/mocks/offers';
 import { AuthorizationStatus } from '@/types/auth';
 
-// Temporary scaffold constant.
-// Per task requirement: "the user is always unauthorized" until the real
-// server and Redux auth slice are implemented.
-// TODO: Remove once Redux auth slice dispatches checkAuthAction() on boot.
+// WHY NoAuth as the initial status:
+// The server and Redux auth slice are not yet integrated. The task requires
+// that unauthenticated state is the starting condition for all scaffold pages.
 const AUTHORIZATION_STATUS = AuthorizationStatus.NoAuth;
 
 const rootElement = document.getElementById('root');
@@ -50,7 +42,7 @@ root.render(
           v7_relativeSplatPath: true,
         }}
       >
-        <App authorizationStatus={AUTHORIZATION_STATUS} />
+        <App authorizationStatus={AUTHORIZATION_STATUS} offers={MOCK_OFFERS} />
       </BrowserRouter>
     </HelmetProvider>
   </React.StrictMode>,

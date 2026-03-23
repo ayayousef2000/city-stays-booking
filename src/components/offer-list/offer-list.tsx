@@ -1,4 +1,4 @@
-// src/components/offer-list/index.tsx
+// src/components/offer-list/offer-list.tsx
 // Renders a list of OfferCard components and tracks the active (hovered) card.
 
 import { useState } from 'react';

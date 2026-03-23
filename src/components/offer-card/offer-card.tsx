@@ -1,4 +1,4 @@
-// src/components/offer-card/index.tsx
+// src/components/offer-card/offer-card.tsx
 // Reusable property card used on the main listing, favorites, and near-places sections.
 
 import type { ReactNode } from 'react';
