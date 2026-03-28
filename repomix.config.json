@@ -1,0 +1,36 @@
+{
+  "output": {
+    "style": "xml",
+    "removeComments": true,
+    "removeEmptyLines": true,
+    "filePath": "repomix-output.xml",
+    "headerText": "This is a 2026 modern React/Vite project. Use strict TypeScript, functional components, and clean architecture."
+  },
+  "ignore": {
+    "customPatterns": [
+      "repomix-output.md",
+      "repomix-output.xml",
+      "public/**",
+      ".husky/**",
+      "temp-folder/**",
+      "node_modules/**",
+      ".git/**",
+      "dist/**",
+      "build/**",
+      "*.log",
+      "package-lock.json",
+      "yarn.lock",
+      "pnpm-lock.yaml",
+      ".DS_Store",
+      "*.map",
+      "repomix.config.json",
+      ".editorconfig",
+      ".gitattributes",
+      ".gitignore",
+      ".prettierrc",
+      "commitlint.config.cjs",
+      "eslint.config.js",
+      "Readme.md"
+    ]
+  }
+}
