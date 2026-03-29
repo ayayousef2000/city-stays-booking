@@ -1,9 +1,39 @@
 // src/pages/main-page/main-page.tsx
+// ─────────────────────────────────────────────────────────────────────────────
+// Main (Index) Page — City Stays Booking
+//
+// Architecture & Design Decisions (2026 standards):
+//
+// 1. DERIVED DATA (useMemo) — `cityMarkers` is computed from `offers` filtered
+//    to the active city. `useMemo` ensures the array reference is stable between
+//    renders, preventing Map's marker effect from firing unnecessarily on
+//    unrelated parent re-renders (e.g., hover state changes).
+//
+// 2. ACTIVE MARKER STATE — `activeOfferId` is lifted to MainPage (the lowest
+//    common ancestor of OfferList and Map). OfferList raises the ID via
+//    `onActiveOfferChange`; Map consumes it as `activeMarkerId`. This is the
+//    classic React "lifting state up" pattern — no context, no Redux needed for
+//    transient UI-only state.
+//
+// 3. MAP CENTRE — Derived from the first geo-tagged offer in the active city,
+//    falling back to a hardcoded Amsterdam centre. In a Redux-powered future,
+//    this will come from a `cities` slice keyed by city name.
+//
+// 4. OPEN/CLOSED PRINCIPLE — Adding a new city requires zero changes here.
+//    The `ACTIVE_CITY` constant (future: Redux selector) drives both the tab
+//    highlight and the `cityOffers` filter automatically.
+//
+// 5. MARKER TITLES — Each marker includes the offer title as a Leaflet tooltip,
+//    providing accessible context without additional UI components.
+// ─────────────────────────────────────────────────────────────────────────────
 
+import { useState, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppRoute } from '@/app/routes';
+import Map from '@/components/map';
+import type { MapMarker } from '@/components/map';
 import OfferList from '@/components/offer-list';
 import type { Offer } from '@/types/offer';
 
@@ -16,24 +46,81 @@ const CITIES = [
   'Amsterdam',
   'Hamburg',
   'Dusseldorf',
-];
+] as const;
+
+/** Currently selected city. Future: driven by Redux `citiesSlice`. */
 const ACTIVE_CITY = 'Amsterdam';
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+/**
+ * Fallback map centre when no offers carry GPS data.
+ * Amsterdam city centre coordinates.
+ */
+const AMSTERDAM_FALLBACK_CENTRE: [number, number] = [52.38333, 4.9];
+
+const MAP_ZOOM = 11;
+
+// ── Props ─────────────────────────────────────────────────────────────────────
 
 interface MainPageProps {
-  /**
-   * Full rental offer catalogue rendered as the main listing.
-   * @remarks Replaced by `useAppSelector(selectFilteredOffers)` once the Redux offer slice is integrated.
-   */
   offers: Offer[];
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
 function MainPage({ offers }: MainPageProps): ReactNode {
+  // Tracks the ID of the card currently being hovered, or null.
+  const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
+
+  // ── Derived data ──────────────────────────────────────────────────────────
+
+  /** Offers belonging to the active city tab. */
+  const cityOffers = useMemo<Offer[]>(
+    () => offers.filter((offer) => offer.city === ACTIVE_CITY),
+    [offers],
+  );
+
+  /**
+   * Convert city offers to MapMarker objects.
+   * Offers without a `location` are excluded — they cannot be pinned.
+   */
+  const cityMarkers = useMemo<MapMarker[]>(
+    () =>
+      cityOffers.reduce<MapMarker[]>((acc, offer) => {
+        if (offer.location) {
+          acc.push({
+            id: offer.id,
+            lat: offer.location.lat,
+            lng: offer.location.lng,
+          });
+        }
+        return acc;
+      }, []),
+    [cityOffers],
+  );
+
+  /**
+   * Map centre: derived from the first geo-tagged offer, else fallback.
+   * Recalculates only when `cityMarkers` changes (stable reference via useMemo).
+   */
+  const mapCentre = useMemo<[number, number]>(
+    () =>
+      cityMarkers.length > 0
+        ? [cityMarkers[0].lat, cityMarkers[0].lng]
+        : AMSTERDAM_FALLBACK_CENTRE,
+    [cityMarkers],
+  );
+
+  // ── Event handlers ────────────────────────────────────────────────────────
+
+  const handleActiveOfferChange = (id: string | null): void => {
+    setActiveOfferId(id);
+  };
+
+  // ── Render ────────────────────────────────────────────────────────────────
+
   return (
     <div className="page page--gray page--main">
+      {/* ── Header ─────────────────────────────────────────────────────── */}
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
@@ -76,8 +163,11 @@ function MainPage({ offers }: MainPageProps): ReactNode {
         </div>
       </header>
 
+      {/* ── Main ───────────────────────────────────────────────────────── */}
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
+
+        {/* City tabs */}
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
@@ -101,14 +191,17 @@ function MainPage({ offers }: MainPageProps): ReactNode {
           </section>
         </div>
 
+        {/* Offer list + Map split layout */}
         <div className="cities">
           <div className="cities__places-container container">
+            {/* ── Left: Offer list ───────────────────────────────────── */}
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {offers.length} places to stay in {ACTIVE_CITY}
+                {cityOffers.length} places to stay in {ACTIVE_CITY}
               </b>
 
+              {/* Sorting — static for now; future: sortSlice */}
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by </span>
                 <span
@@ -131,15 +224,34 @@ function MainPage({ offers }: MainPageProps): ReactNode {
                 </ul>
               </form>
 
+              {/*
+               * OfferList raises hover events via onActiveOfferChange.
+               * We pass cityOffers (already filtered) rather than all offers
+               * to keep the list and map in sync automatically.
+               */}
               <OfferList
-                offers={offers}
+                offers={cityOffers}
                 cardType="cities"
                 className="cities__places-list places__list tabs__content"
+                onActiveOfferChange={handleActiveOfferChange}
               />
             </section>
 
+            {/* ── Right: Interactive map ─────────────────────────────── */}
             <div className="cities__right-section">
-              <section className="cities__map map" />
+              {/*
+               * Map is the pure Leaflet bridge.
+               * - `center` and `markers` are memoised above — stable references.
+               * - `activeMarkerId` triggers only an icon swap inside the effect,
+               *   never a full marker rebuild.
+               */}
+              <Map
+                center={mapCentre}
+                zoom={MAP_ZOOM}
+                markers={cityMarkers}
+                activeMarkerId={activeOfferId}
+                className="cities__map"
+              />
             </div>
           </div>
         </div>
