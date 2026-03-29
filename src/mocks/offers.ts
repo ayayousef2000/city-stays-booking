@@ -1,5 +1,16 @@
 // src/mocks/offers.ts
-// Static mock data for 4 rental offers used across pages until the API is integrated.
+// ─────────────────────────────────────────────────────────────────────────────
+// Static mock data for local development and unit testing.
+//
+// Design decisions (2026 standards):
+// • GPS coordinates are co-located with each Offer record — the map component
+//   consumes offers directly and derives markers via a selector/filter, rather
+//   than maintaining a separate parallel data structure. Single source of truth.
+// • Non-Amsterdam cities intentionally omit `location` — this exercises the
+//   optional field and keeps mocks realistic (API may return partial data).
+// • Coordinates sourced from the product spec; using named constants would
+//   obscure the data; inline values are clearer here given the small dataset.
+// ─────────────────────────────────────────────────────────────────────────────
 
 import type { Offer } from '@/types/offer';
 
@@ -14,6 +25,7 @@ export const MOCK_OFFERS: Offer[] = [
     isPremium: true,
     isBookmarked: false,
     city: 'Amsterdam',
+    location: { lat: 52.3909553943508, lng: 4.85309666406198 },
   },
   {
     id: '2',
@@ -25,6 +37,7 @@ export const MOCK_OFFERS: Offer[] = [
     isPremium: false,
     isBookmarked: true,
     city: 'Amsterdam',
+    location: { lat: 52.3609553943508, lng: 4.85309666406198 },
   },
   {
     id: '3',
@@ -36,6 +49,7 @@ export const MOCK_OFFERS: Offer[] = [
     isPremium: false,
     isBookmarked: true,
     city: 'Cologne',
+    // No location — Cologne city map not yet implemented
   },
   {
     id: '4',
@@ -47,5 +61,18 @@ export const MOCK_OFFERS: Offer[] = [
     isPremium: false,
     isBookmarked: false,
     city: 'Amsterdam',
+    location: { lat: 52.3909553943508, lng: 4.929309666406198 },
+  },
+  {
+    id: '5',
+    imageUrl: 'img/apartment-01.jpg',
+    title: 'Canal View Studio',
+    price: 145,
+    rating: 4,
+    type: 'Studio',
+    isPremium: true,
+    isBookmarked: false,
+    city: 'Amsterdam',
+    location: { lat: 52.3809553943508, lng: 4.939309666406198 },
   },
 ];
