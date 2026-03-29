@@ -134,6 +134,10 @@ export default defineConfig({
 
         // CommentForm — dedicated tests will be added when Redux submit action is wired.
         'src/components/comment-form/**',
+
+        // Leaflet bridge — imperative DOM/canvas API requires E2E testing,
+        // not jsdom unit tests. Excluded at the same level as page components.
+        'src/components/map/**',
       ],
 
       // Minimum thresholds enforced in CI. Fail the build if coverage drops below.
