@@ -1,16 +1,15 @@
 // src/types/offer.ts
-// Domain model for a rental offer as returned by the REST API.
+// ─────────────────────────────────────────────────────────────────────────────
+// Domain types for the Offer entity.
 //
-// WHY readonly:
-// Offer objects arrive from the API and are stored in Redux.
-// Mutations must go through Redux actions — never by direct property
-// assignment. readonly enforces this at the type level: the compiler
-// rejects `offer.price = 99` anywhere in the codebase.
-//
-// WHY a string union for `type` instead of `string`:
-// `string` accepts any value. A union of known accommodation categories
-// makes every switch/conditional over `offer.type` exhaustively checkable
-// by TypeScript and self-documents the valid values from the API contract.
+// Design decisions (2026 standards):
+// • `Location` is extracted as a standalone interface — Separation of Concerns.
+//   GPS data is geographic domain knowledge, independent of booking details.
+// • All fields remain `readonly` — Offers are value objects; mutations go
+//   through Redux actions, never direct field assignment.
+// • `location` is optional (`?`) so existing non-geo offers and API responses
+//   that omit coordinates remain valid without casting.
+// ─────────────────────────────────────────────────────────────────────────────
 
 export type OfferType =
   | 'Apartment'
@@ -18,6 +17,12 @@ export type OfferType =
   | 'House'
   | 'Hotel'
   | 'Studio';
+
+/** GPS coordinate pair, matching the Leaflet `LatLngTuple` convention [lat, lng]. */
+export interface Location {
+  readonly lat: number;
+  readonly lng: number;
+}
 
 export interface Offer {
   readonly id: string;
@@ -29,4 +34,6 @@ export interface Offer {
   readonly isPremium: boolean;
   readonly isBookmarked: boolean;
   readonly city: string;
+  /** Optional GPS coordinates. Present for all map-eligible offers. */
+  readonly location?: Location;
 }
